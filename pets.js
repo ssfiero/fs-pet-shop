@@ -3,17 +3,21 @@ let path = require('path');
 let node = path.basename(process.argv[0]);
 let file = path.basename(process.argv[1]);
 let cmd = process.argv[2];
+let petIndex = process.argv[3];
 
 
 
 if (cmd === 'read') {
   fs.readFile('./pets.json', 'utf8', function(err, data) {
+    let pet = JSON.parse(data);
+
     if (err) {
       throw err;
     }
-
-    let pet = JSON.parse(data);
-    let petIndex = process.argv[3];
+    else if (petIndex < 0 || petIndex > (pet.length - 1)) {
+      console.error(`Usage: ${node} ${file} ${cmd} INDEX`);
+      process.exit(1);
+    }
 
     if (petIndex === undefined) {
       console.log(pet);
