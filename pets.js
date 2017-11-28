@@ -49,7 +49,7 @@ else if (cmd === 'create') {
 
     let petsJSON = JSON.stringify(newParsed);
 
-    // write to 
+    // write to database
     fs.writeFile('./pets.json', petsJSON, function(err, data) {
       console.log(pet);
     });
@@ -61,33 +61,3 @@ else {
   console.error(`Usage: ${node} ${file} [read | create | update | destroy]`);
   process.exit(1);
 }
-
-
-
-
-
-
-// else if (cmd === 'create') {
-//   fs.readFile('./pets.json', 'utf8', function(err, data) {
-//     if (err) {
-//       // throw err;
-//       console.error(`Usage: ${node} ${file} ${cmd}`);
-//     }
-//
-//     let newParsed = JSON.parse(data);
-//     // console.log(newParsed);
-//
-//     let pet = {};
-//     // console.log(typeof process.argv[3]);
-//     pet.age = process.argv[3];
-//     // console.log(typeof pet.age);
-//     pet.kind = process.argv[4];
-//     pet.name = process.argv[5];
-//     // console.log('New created pet: ', pet);
-//     console.log(pet);
-//
-//     newParsed.push(pet);
-//     // console.log(newParsed);
-//
-//   });
-// }
