@@ -31,7 +31,6 @@ else if (cmd === 'create') {
   fs.readFile('./pets.json', 'utf8', function(err, data) {
     if (err) {
       throw err;
-      // console.error(`Usage: ${node} ${file} ${cmd}`);
     }
     else if (process.argv[3] === undefined || process.argv[4] === undefined || process.argv[5] === undefined) {
       console.error(`Usage: ${node} ${file} ${cmd} AGE KIND NAME`);
@@ -56,6 +55,38 @@ else if (cmd === 'create') {
     // write to database
     fs.writeFile('./pets.json', petsJSON, function(err, data) {
       console.log(pet);
+    });
+
+  });
+}
+else if (cmd === 'update') {
+  fs.readFile('./pets.json', 'utf8', function(err, data) {
+    if (err) {
+      throw err;
+    }
+    else if (process.argv[3] === undefined || process.argv[4] === undefined || process.argv[5] === undefined || process.argv[6] === undefined) {
+      console.error(`Usage: ${node} ${file} ${cmd} INDEX AGE KIND NAME`);
+      process.exit(1);
+    }
+
+    let newParsed = JSON.parse(data);
+    // console.log(newParsed);
+
+    let petInx = process.argv[3];
+
+    let petUpdated = newParsed[petInx];
+    // console.log('Parsed index: ', petUpdated);
+    petUpdated.age = Number.parseInt(process.argv[4]);
+    petUpdated.kind = process.argv[5];
+    petUpdated.name = process.argv[6];
+
+    newParsed.push(petUpdated);
+
+    let petsJSON = JSON.stringify(newParsed);
+
+    // write to database
+    fs.writeFile('./pets.json', petsJSON, function(err, data) {
+      console.log(petUpdated);
     });
 
   });
