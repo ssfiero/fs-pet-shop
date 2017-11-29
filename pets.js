@@ -75,7 +75,7 @@ else if (cmd === 'update') {
     let petInx = process.argv[3];
     let petUpdated = newParsed[petInx];
     // console.log('Parsed index: ', petUpdated);
-    
+
     petUpdated.age = Number.parseInt(process.argv[4]);
     petUpdated.kind = process.argv[5];
     petUpdated.name = process.argv[6];
@@ -85,6 +85,33 @@ else if (cmd === 'update') {
     // write to database
     fs.writeFile('./pets.json', petsJSON, function(err, data) {
       console.log(petUpdated);
+    });
+
+  });
+}
+else if (cmd === 'destroy') {
+  fs.readFile('./pets.json', 'utf8', function(err, data) {
+    if (err) {
+      throw err;
+    }
+    else if (process.argv[3] === undefined) {
+      console.error(`Usage: ${node} ${file} ${cmd} INDEX`);
+      process.exit(1);
+    }
+
+    let newParsed = JSON.parse(data);
+    // console.log(newParsed);
+
+    let petInx = process.argv[3];
+
+    // Delete object at selected index
+    newParsed.splice(petInx, 1);
+
+    let petsJSON = JSON.stringify(newParsed);
+
+    // write to database
+    fs.writeFile('./pets.json', petsJSON, function(err, data) {
+      console.log(newParsed);
     });
 
   });
