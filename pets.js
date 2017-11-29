@@ -73,14 +73,12 @@ else if (cmd === 'update') {
     // console.log(newParsed);
 
     let petInx = process.argv[3];
-
     let petUpdated = newParsed[petInx];
     // console.log('Parsed index: ', petUpdated);
+    
     petUpdated.age = Number.parseInt(process.argv[4]);
     petUpdated.kind = process.argv[5];
     petUpdated.name = process.argv[6];
-
-    newParsed.push(petUpdated);
 
     let petsJSON = JSON.stringify(newParsed);
 
