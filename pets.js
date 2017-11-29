@@ -105,13 +105,14 @@ else if (cmd === 'destroy') {
     let petInx = process.argv[3];
 
     // Delete object at selected index
-    newParsed.splice(petInx, 1);
+    let deletedPet = newParsed.splice(petInx, 1)[0];
+    // console.log(deletedPet);
 
     let petsJSON = JSON.stringify(newParsed);
 
     // write to database
     fs.writeFile('./pets.json', petsJSON, function(err, data) {
-      console.log(newParsed);
+      console.log(deletedPet);
     });
 
   });
