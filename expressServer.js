@@ -25,6 +25,26 @@ app.get('/pets', function(req, res) {
 });
 
 
+app.get('/pets/:id', function(req, res) {
+  fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
+    if (err) {
+      console.error(err.stack);
+      return res.sendStatus(500);
+    }
+
+    let id = Number.parseInt(req.params.id);
+    let pets = JSON.parse(petsJSON);
+
+    if (id < 0 || id >= pets.length || Number.isNaN(id)) {
+      return res.sendStatus(404);
+    }
+
+    res.set('Content-Type', 'application/json');
+    res.send(pets[id]);
+  });
+});
+
+
 app.use(function(req, res) {
   res.sendStatus(404);
 });
