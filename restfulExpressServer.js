@@ -88,6 +88,72 @@ app.post('/pets', function(req, res) {
 });
 
 
+app.patch('/pets/:id', function(req, res) {
+  fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
+    if (err) {
+      console.error(err.stack);
+      return res.sendStatus(500);
+    }
+
+    let id = Number.parseInt(req.params.id);
+    let pets = JSON.parse(petsJSON);
+    let updatedPet = pets[id];
+
+    updatedPet.age = Number.parseInt(req.body.age);
+    updatedPet.kind = req.body.kind;
+    updatedPet.name = req.body.name;
+
+    // if (updatedPet.age === '' || updatedPet.kind === '' || updatedPet.name === '') {
+    //   updatedPet.age = Number.parseInt(req.body.age);
+    //   updatedPet.kind = req.body.age;
+    //   updatedPet.name = req.body.age;
+    // }
+
+    pets.push(updatedPet);
+
+    let updatedPetsJSON = JSON.stringify(pets);
+
+    fs.writeFile(petsPath, updatedPetsJSON, function(writeErr) {
+      if (writeErr) {
+        console.error(writeErr.stack);
+        return res.sendStatus(500);
+      }
+
+      res.set('Content-Type', 'application/json');
+      res.send(updatedPet);
+    });
+  });
+});
+
+
+app.delete('/pets/:id', function(req, res) {
+  fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
+    if (err) {
+      console.error(err.stack);
+      return res.sendStatus(500);
+    }
+
+    let id = Number.parseInt(req.params.id);
+    console.log(id);
+    let pets = JSON.parse(petsJSON);
+
+    let delPet = pets.splice(id, 1)[0];
+
+    let delPetsJSON = JSON.stringify(pets);
+
+    fs.writeFile(petsPath, delPetsJSON, function(writeErr) {
+      if (writeErr) {
+        console.error(writeErr.stack);
+        return res.sendStatus(500);
+      }
+
+      res.set('Content-Type', 'application/json');
+      res.send(delPet);
+    });
+  });
+});
+
+
 app.use(function(req, res) {
   res.sendStatus(404);
 });
