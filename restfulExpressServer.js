@@ -99,17 +99,21 @@ app.patch('/pets/:id', function(req, res) {
     let pets = JSON.parse(petsJSON);
     let updatedPet = pets[id];
 
-    updatedPet.age = Number.parseInt(req.body.age);
-    updatedPet.kind = req.body.kind;
-    updatedPet.name = req.body.name;
+    // updatedPet.age = Number.parseInt(req.body.age);
+    // updatedPet.kind = req.body.kind;
+    // updatedPet.name = req.body.name;
 
-    // if (updatedPet.age === '' || updatedPet.kind === '' || updatedPet.name === '') {
-    //   updatedPet.age = Number.parseInt(req.body.age);
-    //   updatedPet.kind = req.body.age;
-    //   updatedPet.name = req.body.age;
-    // }
+    if (Number.parseInt(req.body.age) >= 0) {
+      updatedPet.age = Number.parseInt(req.body.age);
+    }
 
-    pets.push(updatedPet);
+    if (req.body.kind) {
+      updatedPet.kind = req.body.kind;
+    }
+
+    if (req.body.name) {
+      updatedPet.name = req.body.name;
+    }
 
     let updatedPetsJSON = JSON.stringify(pets);
 
@@ -134,7 +138,7 @@ app.delete('/pets/:id', function(req, res) {
     }
 
     let id = Number.parseInt(req.params.id);
-    console.log(id);
+
     let pets = JSON.parse(petsJSON);
 
     let delPet = pets.splice(id, 1)[0];
